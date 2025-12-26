@@ -5,6 +5,8 @@ import { fetchReleases } from '../services/github';
 
 export const useTrackItData = () => {
   const [state, setState] = useState<AppState>(loadState);
+  const [page, setPage] = useState(1);
+  const [loadingMore, setLoadingMore] = useState(false);
 
   // Persist state changes
   useEffect(() => {
@@ -39,7 +41,8 @@ export const useTrackItData = () => {
   }, []);
 
   const refreshAll = useCallback(async () => {
-    const promises = state.sources.map(s => fetchReleases(s.owner, s.repo));
+    setPage(1);
+    const promises = state.sources.map(s => fetchReleases(s.owner, s.repo, 1));
     const results = await Promise.all(promises);
     const allReleases = results.flat();
 
@@ -52,11 +55,43 @@ export const useTrackItData = () => {
     }));
   }, [state.sources]);
 
+  const loadMore = useCallback(async () => {
+    if (loadingMore) return;
+    setLoadingMore(true);
+    const nextPage = page + 1;
+    
+    try {
+      const promises = state.sources.map(s => fetchReleases(s.owner, s.repo, nextPage));
+      const results = await Promise.all(promises);
+      const newReleases = results.flat();
+      
+      if (newReleases.length > 0) {
+        setPage(nextPage);
+        setState(prev => {
+          // Filter out duplicates based on id
+          const existingIds = new Set(prev.releases.map(r => r.id));
+          const uniqueNewReleases = newReleases.filter(r => !existingIds.has(r.id));
+          
+          return {
+            ...prev,
+            releases: [...prev.releases, ...uniqueNewReleases].sort((a, b) => 
+              new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
+            )
+          };
+        });
+      }
+    } finally {
+      setLoadingMore(false);
+    }
+  }, [state.sources, page, loadingMore]);
+
   return {
     sources: state.sources,
     releases: state.releases,
     addSource,
     removeSource,
-    refreshAll
+    refreshAll,
+    loadMore,
+    loadingMore
   };
 };

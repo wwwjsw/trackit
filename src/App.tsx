@@ -37,7 +37,7 @@ function Nav() {
 }
 
 function App() {
-  const { sources, releases, addSource, removeSource, refreshAll } = useTrackItData();
+  const { sources, releases, addSource, removeSource, refreshAll, loadMore, loadingMore } = useTrackItData();
 
   return (
     <Router basename='/trackit'>
@@ -65,7 +65,7 @@ function App() {
           </h1>
         </header>
         <Routes>
-          <Route path="/" element={<Timeline releases={releases} refresh={refreshAll} />} />
+          <Route path="/" element={<Timeline releases={releases} refresh={refreshAll} loadMore={loadMore} loadingMore={loadingMore} />} />
           <Route path="/sources" element={<SourcesManager sources={sources} onAdd={addSource} onRemove={removeSource} />} />
         </Routes>
       </div>

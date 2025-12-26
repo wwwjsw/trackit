@@ -2,9 +2,9 @@ import type { Release } from '../types';
 
 const GITHUB_API_BASE = 'https://api.github.com/repos';
 
-export const fetchReleases = async (owner: string, repo: string): Promise<Release[]> => {
+export const fetchReleases = async (owner: string, repo: string, page: number = 1, perPage: number = 30): Promise<Release[]> => {
   try {
-    const response = await fetch(`${GITHUB_API_BASE}/${owner}/${repo}/releases`);
+    const response = await fetch(`${GITHUB_API_BASE}/${owner}/${repo}/releases?page=${page}&per_page=${perPage}`);
     if (!response.ok) {
       throw new Error(`GitHub API error: ${response.statusText}`);
     }
