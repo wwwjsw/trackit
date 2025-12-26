@@ -40,7 +40,7 @@ function App() {
   const { sources, releases, addSource, removeSource, refreshAll } = useTrackItData();
 
   return (
-    <Router>
+    <Router basename='/trackit'>
       <div style={{ paddingBottom: '100px', flex: 1 }}>
         <header style={{ 
           padding: '1.5rem', 
