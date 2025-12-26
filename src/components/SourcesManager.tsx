@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { Source } from '../types';
-import { Trash2, Plus, Github } from 'lucide-react';
+import { Trash2, Plus, BookIcon } from 'lucide-react';
 
 interface SourcesManagerProps {
   sources: Source[];
@@ -25,17 +25,21 @@ export function SourcesManager({ sources, onAdd, onRemove }: SourcesManagerProps
     setInput('');
   };
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInput(e.target.value.replaceAll(" ", ""));
+  };
+
   return (
     <div style={{ padding: '1rem' }}>
       <div className="glass-panel" style={{ padding: '1.5rem', borderRadius: '12px', marginBottom: '2rem' }}>
         <h3 style={{ marginTop: 0, marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          <Github /> Add Source
+          <BookIcon /> Add Source
         </h3>
         <form onSubmit={handleAdd} style={{ display: 'flex', gap: '0.5rem' }}>
           <input 
             type="text" 
             value={input}
-            onChange={e => setInput(e.target.value)}
+            onChange={handleInputChange}
             placeholder="facebook/react"
             style={{ 
               flex: 1, 
