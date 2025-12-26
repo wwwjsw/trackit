@@ -65,8 +65,8 @@ function App() {
           </h1>
         </header>
         <Routes>
-          <Route path="/" element={<Timeline releases={releases} refresh={refreshAll} loadMore={loadMore} loadingMore={loadingMore} />} />
-          <Route path="/sources" element={<SourcesManager sources={sources} onAdd={addSource} onRemove={removeSource} />} />
+          <Route index element={<Timeline releases={releases} refresh={refreshAll} loadMore={loadMore} loadingMore={loadingMore} />} />
+          <Route path="sources" element={<SourcesManager sources={sources} onAdd={addSource} onRemove={removeSource} />} />
         </Routes>
       </div>
       <Nav />
