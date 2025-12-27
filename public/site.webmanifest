@@ -1,8 +1,8 @@
 {
-  "name": "Your Application Name",
-  "short_name": "App",
-  "description": "Application description",
-  "start_url": "/",
+  "name": "TrackIt",
+  "short_name": "TrackIt",
+  "description": "Streamline your tech stack updates: Track releases and manage preferences offline",
+  "start_url": "/trackit",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#ffffff",
